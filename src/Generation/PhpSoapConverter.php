@@ -66,9 +66,9 @@ class PhpSoapConverter
 
     private function visitMessage(OperationMessage $message, $hint = '', \GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, $service)
     {
-        if (!isset($this->classes['__'.spl_object_hash($message)])) {
+        if (!isset($this->classes['__' . spl_object_hash($message)])) {
 
-            $this->classes['__'.spl_object_hash($message)] = $bodyClass = new PHPClass();
+            $this->classes['__' . spl_object_hash($message)] = $bodyClass = new PHPClass();
 
             list ($name, $ns) = $this->findPHPName($message, Inflector::classify($hint));
             $bodyClass->setName(Inflector::classify($name));
@@ -103,7 +103,7 @@ class PhpSoapConverter
                 $envelopeClass->addProperty($property);
             }
         }
-        return $this->classes['__'.spl_object_hash($message)];
+        return $this->classes['__' . spl_object_hash($message)];
     }
 
     private function visitMessageParts(PHPClass $class, array $parts)

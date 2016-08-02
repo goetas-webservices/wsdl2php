@@ -1,9 +1,9 @@
 <?php
 namespace GoetasWebservices\WsdlToPhp\Command;
 
+use GoetasWebservices\Xsd\XsdToPhp\Command\Convert as XsdToPhpConvert;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use GoetasWebservices\Xsd\XsdToPhp\Command\Convert as XsdToPhpConvert;
 
 class Convert extends XsdToPhpConvert
 {

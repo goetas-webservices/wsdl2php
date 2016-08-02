@@ -7,12 +7,10 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
      * @var Generator
      */
     protected static $generator;
-
-    private static $namespace = 'Ex';
-    private static $files = [];
-
     protected static $php = [];
     protected static $jms = [];
+    private static $namespace = 'Ex';
+    private static $files = [];
 
     public static function setUpBeforeClass()
     {

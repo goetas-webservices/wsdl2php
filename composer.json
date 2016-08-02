@@ -1,0 +1,47 @@
+{
+  "name": "goetas-webservices/wsdl2php",
+  "authors": [
+    {
+      "name": "Asmir Mustafic",
+      "email": "goetas@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.5.2",
+    "goetas-webservices/soap-reader": "^0.1",
+    "goetas-webservices/wsdl-reader": "^0.2",
+    "goetas-webservices/xsd2php-runtime": "^0.2",
+    "psr/http-message": "^1.0",
+    "rybakit/arguments-resolver": "^0.5.0",
+    "doctrine/instantiator": "^1.0.3"
+  },
+  "require-dev": {
+    "zendframework/zend-diactoros": "^1.3",
+    "phpunit/phpunit": "^4.8|^5.0",
+    "goetas-webservices/xsd2php": "^0.1",
+    "jms/serializer": "serializer-master-dev as 1.0"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/goetas/serializer.git"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "GoetasWebservices\\SoapServices\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "GoetasWebservices\\WsdlToPhp\\Tests\\": "tests",
+      "GoetasWebservices\\Xsd\\XsdToPhp\\Tests\\": "vendor/goetas-webservices/xsd2php/tests"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.1-dev"
+    }
+  }
+}

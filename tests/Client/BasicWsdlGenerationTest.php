@@ -1,5 +1,5 @@
 <?php
-namespace GoetasWebservices\SoapServices\Tests;
+namespace GoetasWebservices\WsdlToPhp\Tests;
 
 class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
 {

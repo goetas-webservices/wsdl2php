@@ -1,8 +1,8 @@
 <?php
-namespace GoetasWebservices\SoapServices\Tests;
+namespace GoetasWebservices\WsdlToPhp\Tests;
 
-use GoetasWebservices\SoapServices\Generation\JmsSoapConverter;
-use GoetasWebservices\SoapServices\Generation\PhpSoapConverter;
+use GoetasWebservices\WsdlToPhp\Generation\JmsSoapConverter;
+use GoetasWebservices\WsdlToPhp\Generation\PhpSoapConverter;
 use GoetasWebservices\XML\SOAPReader\SoapReader;
 use GoetasWebservices\XML\WSDLReader\DefinitionsReader;
 use GoetasWebservices\Xsd\XsdToPhp\Jms\YamlConverter;

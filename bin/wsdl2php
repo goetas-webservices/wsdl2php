@@ -3,6 +3,7 @@
 namespace GoetasWebservices\WsdlToPhp\Bin;
 
 use GoetasWebservices\WsdlToPhp\Command\Convert;
+use GoetasWebservices\WsdlToPhp\Command\GenerateServer;
 use GoetasWebservices\Xsd\XsdToPhp\AbstractConverter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application;
@@ -35,5 +36,6 @@ $cli->setCatchExceptions(true);
 $cli->addCommands(array(
     new Convert($container, 'php'),
     new Convert($container, 'jms'),
+    new GenerateServer($container)
 ));
 $cli->run();

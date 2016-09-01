@@ -137,7 +137,7 @@ class JmsSoapConverter
                 $envelopeData["properties"]['header'] = $property;
 
                 foreach ($message->getHeaders() as $k => $header) {
-                    $this->visitMessageParts($headersData, [$header->getPart()]);
+                    $this->visitMessageParts($headersData, [$header->getPart()], 'GoetasWebservices\SoapServices\SoapEnvelope\Headers');
                 }
             }
 
@@ -145,7 +145,7 @@ class JmsSoapConverter
         return $this->classes[spl_object_hash($message)];
     }
 
-    private function visitMessageParts(&$data, array $parts)
+    private function visitMessageParts(&$data, array $parts, $wrapper = null)
     {
         /**
          * @var $part \GoetasWebservices\XML\WSDLReader\Wsdl\Message\Part
@@ -164,12 +164,14 @@ class JmsSoapConverter
                 $property["xml_element"]["namespace"] = $part->getElement()->getSchema()->getTargetNamespace();
                 $property["serialized_name"] = $part->getElement()->getName();
                 $c = $this->converter->visitElementDef($part->getElement()->getSchema(), $part->getElement());
-                $property["type"] = key($c);
             } else {
-                $property["serialized_name"] = $part->getName();
                 $property["xml_element"]["namespace"] = null;
-
+                $property["serialized_name"] = $part->getName();
                 $c = $this->converter->visitType($part->getType());
+            }
+            if ($wrapper) {
+                $property["type"] = $wrapper . "<'" . key($c) . "'>";
+            } else {
                 $property["type"] = key($c);
             }
 

@@ -10,7 +10,6 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
     protected static $php = [];
     protected static $jms = [];
     private static $namespace = 'Ex';
-    private static $files = [];
 
     public static function setUpBeforeClass()
     {
@@ -26,6 +25,11 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
     {
         self::$generator->unRegisterAutoloader();
         //self::$generator->cleanDirectories();
+    }
+
+    public function testGenerator()
+    {
+        self::setUpBeforeClass();
     }
 
     public function getTypes()

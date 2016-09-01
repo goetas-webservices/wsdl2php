@@ -36,6 +36,5 @@ $cli->setCatchExceptions(true);
 $cli->addCommands(array(
     new Convert($container, 'php'),
     new Convert($container, 'jms'),
-    new GenerateServer($container)
 ));
 $cli->run();

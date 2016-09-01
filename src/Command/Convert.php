@@ -14,7 +14,7 @@ class Convert extends XsdToPhpConvert
     protected function configure()
     {
         parent::configure();
-        $this->setName('wsdl2php:convert:' . $this->what);
+        $this->setName('convert:' . $this->what);
     }
 
     /**

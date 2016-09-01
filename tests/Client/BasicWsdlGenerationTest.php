@@ -15,7 +15,7 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
     {
         self::$generator = new Generator([
             'http://www.example.org/test/' => self::$namespace
-        ], [], '/home/goetas/projects/webservices/tmp');
+        ]);
 
         list(self::$php, self::$jms) = self::$generator->getData([__DIR__ . '/../Fixtures/Soap/test.wsdl']);
         self::$generator->registerAutoloader();

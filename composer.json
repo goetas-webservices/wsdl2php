@@ -19,7 +19,7 @@
   },
   "autoload": {
     "psr-4": {
-      "GoetasWebservices\\SoapServices\\": "src"
+      "GoetasWebservices\\WsdlToPhp\\": "src"
     }
   },
   "autoload-dev": {

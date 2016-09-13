@@ -26,7 +26,7 @@ class PhpMetadataWriter implements PhpMetadataWriterInterface
     public function write(array $metadata)
     {
         $this->logger->info(sprintf("Writing WSDL metadata to %s", $this->destination));
-        file_put_contents($this->destination, var_export($metadata, 1));
+        file_put_contents($this->destination, '<?php return ' . var_export($metadata, 1) . ";\n");
     }
 }
 

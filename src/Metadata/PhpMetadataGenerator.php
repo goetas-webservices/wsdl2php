@@ -22,13 +22,18 @@ class PhpMetadataGenerator implements PhpMetadataGeneratorInterface
      * @var NamingStrategy
      */
     private $namingStrategy;
+    /**
+     * @var bool
+     */
+    private $unwrap = false;
 
     /**
      * @param NamingStrategy $namingStrategy
+     * @param bool $unwrap
      * @param array $namespaces
      * @param array $baseNs
      */
-    public function __construct(NamingStrategy $namingStrategy, array $namespaces = array(), array $baseNs = array())
+    public function __construct(NamingStrategy $namingStrategy, $unwrap = false, array $namespaces = array(), array $baseNs = array())
     {
         foreach ($baseNs as $k => $ns) {
             if (isset($this->baseNs[$k])) {
@@ -37,6 +42,7 @@ class PhpMetadataGenerator implements PhpMetadataGeneratorInterface
         }
         $this->namespaces = $namespaces;
         $this->namingStrategy = $namingStrategy;
+        $this->unwrap = $unwrap;
     }
 
     /**
@@ -49,7 +55,8 @@ class PhpMetadataGenerator implements PhpMetadataGeneratorInterface
         foreach ($soapServices as $soapService) {
             $services[$soapService->getPort()->getService()->getName()][$soapService->getPort()->getName()] = [
                 'operations' => $this->generateService($soapService),
-                'endpoint' => $soapService->getAddress()
+                'endpoint' => $soapService->getAddress(),
+                'unwrap' => $this->unwrap
             ];
         }
         return $services;

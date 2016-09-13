@@ -27,6 +27,9 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('wsdl_metadata_destination')
                     ->defaultValue(false)
                 ->end()
+                ->scalarNode('unwrap_returns')
+                    ->defaultValue(false)
+                ->end()
             ->end()
         ;
         return $treeBuilder;

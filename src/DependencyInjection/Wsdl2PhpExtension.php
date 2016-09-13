@@ -21,7 +21,7 @@ class Wsdl2PhpExtension extends Extension
         $container->setParameter('wsdl2php.config', $config);
 
         $writer = $container->getDefinition('goetas.wsdl2php.metadata.generator');
-        $writer->replaceArgument(2, $config);
+        $writer->replaceArgument(3, $config);
 
         $container->setParameter('generate_metadata', (bool)$config['wsdl_metadata_destination']);
 

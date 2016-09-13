@@ -266,6 +266,7 @@
                 ],
             ],
             'endpoint' => 'http://www.example.org/',
+            'unwrap' => false,
         ],
     ],
     'alternativeTest' => [
@@ -273,6 +274,7 @@
             'operations' => [
             ],
             'endpoint' => 'http://www.example.org/',
+            'unwrap' => false,
         ],
         'otherPort' => [
             'operations' => [
@@ -302,11 +304,13 @@
                 ],
             ],
             'endpoint' => 'http://www.example.org/',
+            'unwrap' => false,
         ],
         'http' => [
             'operations' => [
             ],
             'endpoint' => NULL,
+            'unwrap' => false,
         ],
     ],
 ];

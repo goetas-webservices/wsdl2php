@@ -12,7 +12,7 @@ class ConfigureMetadataPass implements CompilerPassInterface
         $config = $container->getParameter('xsd2php.config');
 
         $writer = $container->getDefinition('goetas.wsdl2php.metadata.generator');
-        $writer->replaceArgument(1, $config['namespaces']);
+        $writer->replaceArgument(2, $config['namespaces']);
 
     }
 }

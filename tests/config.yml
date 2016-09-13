@@ -1,0 +1,12 @@
+xsd2php:
+  namespaces:
+    'http://www.example.org/test/': 'TestNs'
+  destinations_php:
+    'TestNs': example
+  destinations_jms:
+    'TestNs': example
+  aliases:
+    'http://www.example.org/test/':
+      responseHaderResponse:  'HaderResponse'
+
+wsdl2php: ~

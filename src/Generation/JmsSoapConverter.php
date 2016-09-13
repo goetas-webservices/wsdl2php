@@ -113,7 +113,7 @@ class JmsSoapConverter
             $this->classes[] = &$envelopeClass;
 
 
-            if (count($message->getHeaders())) {
+            if (1) {
                 $headersClass = array();
                 $headersData = array();
 
@@ -127,7 +127,7 @@ class JmsSoapConverter
                 $property = [];
                 $property["expose"] = true;
                 $property["access_type"] = "public_method";
-                $property["type"] = $className;
+                $property["type"] = count($message->getHeaders()) ? $className : 'GoetasWebservices\SoapServices\SoapClient\Arguments\Headers\Handler\HeaderPlaceholder';
                 $property["serialized_name"] = 'Header';
                 $property["xml_element"]["namespace"] = 'http://schemas.xmlsoap.org/soap/envelope/';
 

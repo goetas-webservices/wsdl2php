@@ -146,11 +146,11 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Ex\SoapEnvelope\Headers\RequestHeaderInput', self::$php['Ex\\SoapEnvelope\\Messages\\RequestHeaderInput']->getProperty('header')->getType()->getFullName());
 
         $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleInput']->hasProperty('body'));
-        $this->assertFalse(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleInput']->hasProperty('header'));
+        $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleInput']->hasProperty('header'));
         $this->assertEquals('Ex\SoapEnvelope\Parts\GetSimpleInput', self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleInput']->getProperty('body')->getType()->getFullName());
 
         $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleOutput']->hasProperty('body'));
-        $this->assertFalse(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleOutput']->hasProperty('header'));
+        $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleOutput']->hasProperty('header'));
         $this->assertEquals('Ex\SoapEnvelope\Parts\GetSimpleOutput', self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleOutput']->getProperty('body')->getType()->getFullName());
     }
 

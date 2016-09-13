@@ -1,15 +1,5 @@
 #!/usr/bin/env php
 <?php
-namespace GoetasWebservices\WsdlToPhp\Bin;
-
-use GoetasWebservices\WsdlToPhp\Command\Convert;
-use GoetasWebservices\WsdlToPhp\Command\GenerateServer;
-use GoetasWebservices\Xsd\XsdToPhp\AbstractConverter;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Console\Application;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-
 $paths = [
     __DIR__ . '/../vendor/autoload.php',
     __DIR__ . '/../../../autoload.php'
@@ -21,20 +11,16 @@ foreach ($paths as $path) {
     }
 }
 
-$container = new ContainerBuilder();
+$container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
 
-$ref = new \ReflectionClass(AbstractConverter::class);
-$loader = new XmlFileLoader($container, new FileLocator(dirname($ref->getFileName()) . '/Resources/config'));
-$loader->load('services.xml');
+$container->registerExtension(new \GoetasWebservices\WsdlToPhp\DependencyInjection\Wsdl2PhpExtension());
+$container->registerExtension(new \GoetasWebservices\Xsd\XsdToPhp\DependencyInjection\Xsd2PhpExtension());
 
-$loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../src/Resources/config'));
-$loader->load('services.xml');
-
+$output = new \Symfony\Component\Console\Output\ConsoleOutput();
+$container->set('logger', new \Symfony\Component\Console\Logger\ConsoleLogger($output));
 error_reporting(error_reporting() & ~E_NOTICE);
-$cli = new Application('Convert WSDL definitions to PHP classes Command Line Interface', "1.0");
+$cli = new \Symfony\Component\Console\Application('Convert WSDL definitions to PHP classes Command Line Interface', "1.0");
 $cli->setCatchExceptions(true);
-$cli->addCommands(array(
-    new Convert($container, 'php'),
-    new Convert($container, 'jms'),
-));
-$cli->run();
+$cli->add(new \GoetasWebservices\WsdlToPhp\Command\Convert($container));
+$cli->run(null, $output);
+

@@ -89,18 +89,22 @@ class PhpSoapConverter
                 $envelopeClass->addProperty($property);
             }
 
+
+            $property = new PHPProperty('header');
+            $headerClass = new PHPClass();
+            $headerClass->setName(Inflector::classify($name));
+            $headerClass->setNamespace($ns . $this->baseNs['headers']);
+            $envelopeClass->addProperty($property);
+
             if (count($message->getHeaders())) {
-                $property = new PHPProperty('header');
-                $headerClass = new PHPClass();
-                $headerClass->setName(Inflector::classify($name));
-                $headerClass->setNamespace($ns . $this->baseNs['headers']);
-                $this->classes[$headerClass->getFullName()] = $headerClass;
+
                 $property->setType($headerClass);
+                $this->classes[$headerClass->getFullName()] = $headerClass;
 
                 foreach ($message->getHeaders() as $k => $header) {
                     $this->visitMessageParts($headerClass, [$header->getPart()]);
                 }
-                $envelopeClass->addProperty($property);
+
             }
         }
         return $this->classes['__' . spl_object_hash($message)];

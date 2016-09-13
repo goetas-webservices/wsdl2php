@@ -11,11 +11,13 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class MetadataTest extends \PHPUnit_Framework_TestCase
 {
     protected $metadataGenerator;
+
     public function setUp()
     {
         $naming = new ShortNamingStrategy();
         $this->metadataGenerator = new PhpMetadataGenerator($naming, ['http://www.example.org/test/' => 'TestNs']);
     }
+
     public function testMetadata()
     {
 

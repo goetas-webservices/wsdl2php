@@ -5,12 +5,9 @@ use Doctrine\Common\Inflector\Inflector;
 use GoetasWebservices\XML\SOAPReader\Soap\Operation;
 use GoetasWebservices\XML\SOAPReader\Soap\OperationMessage;
 use GoetasWebservices\XML\SOAPReader\Soap\Service;
-use GoetasWebservices\XML\SOAPReader\SoapReader;
-use GoetasWebservices\XML\WSDLReader\DefinitionsReader;
 use GoetasWebservices\XML\WSDLReader\Wsdl\Message\Part;
 use GoetasWebservices\XML\WSDLReader\Wsdl\PortType\Param;
 use GoetasWebservices\Xsd\XsdToPhp\Naming\NamingStrategy;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class PhpMetadataGenerator implements PhpMetadataGeneratorInterface
 {

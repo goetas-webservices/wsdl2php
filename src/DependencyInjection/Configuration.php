@@ -24,6 +24,9 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue('\\SoapEnvelope\\Messages')
                     ->cannotBeEmpty()
                 ->end()
+                ->scalarNode('wsdl_metadata_destination')
+                    ->defaultValue(false)
+                ->end()
             ->end()
         ;
         return $treeBuilder;

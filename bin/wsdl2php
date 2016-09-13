@@ -16,6 +16,8 @@ $container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
 $container->registerExtension(new \GoetasWebservices\WsdlToPhp\DependencyInjection\Wsdl2PhpExtension());
 $container->registerExtension(new \GoetasWebservices\Xsd\XsdToPhp\DependencyInjection\Xsd2PhpExtension());
 
+$container->addCompilerPass(new \GoetasWebservices\WsdlToPhp\DependencyInjection\Compiler\ConfigureMetadataPass());
+
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 $container->set('logger', new \Symfony\Component\Console\Logger\ConsoleLogger($output));
 error_reporting(error_reporting() & ~E_NOTICE);

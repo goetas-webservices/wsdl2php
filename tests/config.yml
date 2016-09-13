@@ -9,4 +9,5 @@ xsd2php:
     'http://www.example.org/test/':
       responseHaderResponse:  'HaderResponse'
 
-wsdl2php: ~
+wsdl2php:
+  wsdl_metadata_destination: example/metadata.php

@@ -10,12 +10,5 @@ interface PhpMetadataGeneratorInterface
      * @return array
      */
     public function generate(array $services);
-
-    /**
-     * @param string $ns
-     * @param string $phpNamespace
-     * @return void
-     */
-    public function addNamespace($ns, $phpNamespace);
 }
 

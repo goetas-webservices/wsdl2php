@@ -39,12 +39,6 @@ class PhpMetadataGenerator implements PhpMetadataGeneratorInterface
         $this->namingStrategy = $namingStrategy;
     }
 
-    public function addNamespace($ns, $phpNamespace)
-    {
-        $this->namespaces[$ns] = $phpNamespace;
-        return $this;
-    }
-
     /**
      * @param Service[] $soapServices
      * @return array

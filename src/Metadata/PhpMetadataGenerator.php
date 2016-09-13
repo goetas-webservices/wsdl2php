@@ -33,7 +33,7 @@ class PhpMetadataGenerator implements PhpMetadataGeneratorInterface
      * @param array $namespaces
      * @param array $baseNs
      */
-    public function __construct(NamingStrategy $namingStrategy, $unwrap = false, array $namespaces = array(), array $baseNs = array())
+    public function __construct(NamingStrategy $namingStrategy, array $namespaces = array(),  $unwrap = false, array $baseNs = array())
     {
         foreach ($baseNs as $k => $ns) {
             if (isset($this->baseNs[$k])) {
@@ -124,18 +124,21 @@ class PhpMetadataGenerator implements PhpMetadataGeneratorInterface
     }
 
     /**
-     * @param Part[] $parts
+     * @param Part[] $messageParts
      * @return array
      */
-    private function getParts(array $parts)
+    private function getParts(array $messageParts)
     {
-        return array_map(function (Part $part) {
+        $parts = [];
+        foreach ($messageParts as $partName => $part){
+           $partName = $this->namingStrategy->getPropertyName($part);
             if ($part->getType()) {
-                return $this->namingStrategy->getTypeName($part->getType());
+                $parts [$partName] =  $this->namingStrategy->getTypeName($part->getType());
             } else {
-                return $this->namingStrategy->getItemName($part->getElement());
+                $parts [$partName] =  $this->namingStrategy->getItemName($part->getElement());
             }
-        }, $parts);
+        }
+        return $parts;
     }
 }
 

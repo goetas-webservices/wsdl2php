@@ -33,7 +33,6 @@ class Convert extends XsdToPhpConvert
 
         $wsdlReader = $this->container->get('goetas.wsdl2php.wsdl_reader');
         $src = $input->getArgument('src');
-        var_dump($src);
         foreach ($src as $file) {
             $definitions = $wsdlReader->readFile($file);
             $schemas[] = $definitions->getSchema();

@@ -2,22 +2,19 @@
 namespace GoetasWebservices\WsdlToPhp\Command;
 
 use GoetasWebservices\Xsd\XsdToPhp\Command\Convert as XsdToPhpConvert;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Convert extends XsdToPhpConvert
 {
-    /**
-     *
-     * @see Console\Command\Command
-     */
     protected function configure()
     {
-        parent::configure();
         $this->setName('convert');
         $this->setDescription("Convert a WSDL file into PHP classes and JMS serializer metadata files");
         $this->setDefinition([
-            new InputOption('config', null, InputOption::VALUE_REQUIRED, 'Config file')
+            new InputArgument('config', InputArgument::REQUIRED, 'Config file'),
+            new InputArgument('src', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Where are located your WSDL files', []),
         ]);
     }
 
@@ -33,9 +30,10 @@ class Convert extends XsdToPhpConvert
         $this->loadConfigurations($input->getArgument('config'));
 
         $schemas = [];
-        $src = $input->getArgument('src');
-        $wsdlReader = $this->container->get('goetas.wsdl2php.wsdl_reader');
 
+        $wsdlReader = $this->container->get('goetas.wsdl2php.wsdl_reader');
+        $src = $input->getArgument('src');
+        var_dump($src);
         foreach ($src as $file) {
             $definitions = $wsdlReader->readFile($file);
             $schemas[] = $definitions->getSchema();

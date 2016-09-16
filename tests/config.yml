@@ -10,4 +10,5 @@ xsd2php:
       responseHaderResponse:  'HaderResponse'
 
 wsdl2php:
-  wsdl_metadata_destination: example/metadata.php
+  metadata:
+    'tests/Fixtures/test.wsdl': ~

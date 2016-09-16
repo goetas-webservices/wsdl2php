@@ -6,7 +6,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ConfigureMetadataPass implements CompilerPassInterface
 {
-
     public function process(ContainerBuilder $container)
     {
         $config = $container->getParameter('xsd2php.config');

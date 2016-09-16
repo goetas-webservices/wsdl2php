@@ -24,19 +24,6 @@
             <argument id="goetas.xsd2php.converter.jms" type="service"/>
         </service>
 
-        <service id="goetas.wsdl2php.metadata.generator"
-                 class="GoetasWebservices\WsdlToPhp\Metadata\PhpMetadataGenerator">
-            <argument id="goetas.xsd2php.naming_convention" type="service"/>
-            <argument type="constant">FALSE</argument>
-            <argument/>
-            <argument/>
-        </service>
-
-        <service id="goetas.wsdl2php.metadata.writer" class="GoetasWebservices\WsdlToPhp\Metadata\PhpMetadataWriter">
-            <argument/>
-            <argument type="service" id="logger"/>
-        </service>
-
 
     </services>
 </container>

@@ -19,19 +19,6 @@ class Wsdl2PhpExtension extends Extension
             $config = array_merge($config, $subConfig);
         }
         $container->setParameter('wsdl2php.config', $config);
-
-        $writer = $container->getDefinition('goetas.wsdl2php.metadata.generator');
-        $writer->replaceArgument(3, $config);
-
-        $container->setParameter('generate_metadata', (bool)$config['wsdl_metadata_destination']);
-
-        $writer = $container->getDefinition('goetas.wsdl2php.metadata.writer');
-        $writer->replaceArgument(0, $config['wsdl_metadata_destination']);
-    }
-
-    protected static function sanitizePhp($ns)
-    {
-        return strtr($ns, '/', '\\');
     }
 
     public function getAlias()

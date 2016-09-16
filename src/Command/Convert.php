@@ -16,9 +16,9 @@ class Convert extends XsdToPhpConvert
         parent::configure();
         $this->setName('convert');
         $this->setDescription("Convert a WSDL file into PHP classes and JMS serializer metadata files");
-//        $this->setDefinition([
-//            new InputOption('metadata', null, InputOption::VALUE_REQUIRED, 'Generate additional WSDL metadata')
-//        ]);
+        $this->setDefinition([
+            new InputOption('config', null, InputOption::VALUE_REQUIRED, 'Config file')
+        ]);
     }
 
     /**
@@ -54,13 +54,6 @@ class Convert extends XsdToPhpConvert
             $writer->write($items);
         }
 
-        if ($this->container->getParameter('generate_metadata')) {
-            $generator = $this->container->get('goetas.wsdl2php.metadata.generator');
-            $metadata = $generator->generate($soapReader->getServices());
-
-            $writer = $this->container->get('goetas.wsdl2php.metadata.writer');
-            $writer->write($metadata);
-        }
         return count($items) ? 0 : 255;
 
     }

@@ -31,23 +31,23 @@ class Convert extends XsdToPhpConvert
 
         $schemas = [];
 
-        $wsdlReader = $this->container->get('goetas.wsdl2php.wsdl_reader');
+        $wsdlReader = $this->container->get('goetas_webservices.wsdl2php.wsdl_reader');
         $src = $input->getArgument('src');
         foreach ($src as $file) {
             $definitions = $wsdlReader->readFile($file);
             $schemas[] = $definitions->getSchema();
         }
 
-        $soapReader = $this->container->get('goetas.wsdl2php.soap_reader');
+        $soapReader = $this->container->get('goetas_webservices.wsdl2php.soap_reader');
 
 
         foreach (['php', 'jms'] as $type) {
-            $converter = $this->container->get('goetas.xsd2php.converter.' . $type);
-            $wsdlConverter = $this->container->get('goetas.wsdl2php.converter.' . $type);
+            $converter = $this->container->get('goetas_webservices.xsd2php.converter.' . $type);
+            $wsdlConverter = $this->container->get('goetas_webservices.wsdl2php.converter.' . $type);
             $items = $wsdlConverter->visitServices($soapReader->getServices());
             $items = array_merge($items, $converter->convert($schemas));
 
-            $writer = $this->container->get('goetas.xsd2php.writer.' . $type);
+            $writer = $this->container->get('goetas_webservices.xsd2php.writer.' . $type);
             $writer->write($items);
         }
 

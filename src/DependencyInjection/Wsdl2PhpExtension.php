@@ -18,7 +18,7 @@ class Wsdl2PhpExtension extends Extension
         foreach ($configs as $subConfig) {
             $config = array_merge($config, $subConfig);
         }
-        $container->setParameter('wsdl2php.config', $config);
+        $container->setParameter('goetas_webservices.wsdl2php.config', $config);
     }
 
     public function getAlias()

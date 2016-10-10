@@ -196,6 +196,13 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
+            <xsd:element name="oneWayNotify">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="in" type="xsd:string"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
         </xsd:schema>
     </wsdl:types>
 
@@ -284,6 +291,9 @@
     <wsdl:message name="noOutputResponse"></wsdl:message>
     <wsdl:message name="noBothRequest"></wsdl:message>
     <wsdl:message name="noBothResponse"></wsdl:message>
+    <wsdl:message name="oneWayNotifyRequest">
+        <wsdl:part name="parameters" element="tns:oneWayNotify"/>
+    </wsdl:message>
     <wsdl:portType name="test">
         <wsdl:operation name="getSimple">
             <wsdl:input message="tns:getSimpleRequest"/>
@@ -331,6 +341,9 @@
         <wsdl:operation name="noBoth">
             <wsdl:input message="tns:noBothRequest"></wsdl:input>
             <wsdl:output message="tns:noBothResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="oneWayNotify">
+            <wsdl:input message="tns:oneWayNotifyRequest"/>
         </wsdl:operation>
     </wsdl:portType>
 
@@ -456,6 +469,12 @@
             <wsdl:output>
                 <soap:body use="literal"/>
             </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="oneWayNotify">
+            <soap:operation soapAction="http://www.example.org/test/oneWayNotify"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
         </wsdl:operation>
     </wsdl:binding>
     <wsdl:binding name="alternativeBinding" type="tns:alternativeTPort">

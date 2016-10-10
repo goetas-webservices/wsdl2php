@@ -61,7 +61,9 @@ class PhpSoapConverter
     private function visitOperation(\GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, $service)
     {
         $this->visitMessage($operation->getInput(), 'input', $operation, $service);
-        $this->visitMessage($operation->getOutput(), 'output', $operation, $service);
+        if (null !== ($output = $operation->getOutput())) {
+            $this->visitMessage($output, 'output', $operation, $service);
+        }
     }
 
     private function visitMessage(OperationMessage $message, $hint = '', \GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, $service)

@@ -264,6 +264,21 @@
                     'fault' => [
                     ],
                 ],
+                'oneWayNotify' => [
+                    'action' => 'http://www.example.org/test/oneWayNotify',
+                    'style' => 'rpc',
+                    'name' => 'oneWayNotify',
+                    'method' => 'oneWayNotify',
+                    'input' => [
+                        'message_fqcn' => 'TestNs\\SoapEnvelope\\Messages\\OneWayNotifyInput',
+                        'headers_fqcn' => 'TestNs\\SoapEnvelope\\Headers\\OneWayNotifyInput',
+                        'part_fqcn' => 'TestNs\\SoapEnvelope\\Parts\\OneWayNotifyInput',
+                        'parts' => [
+                        ],
+                    ],
+                    'fault' => [
+                    ],
+                ],
             ],
             'endpoint' => 'http://www.example.org/',
             'unwrap' => false,

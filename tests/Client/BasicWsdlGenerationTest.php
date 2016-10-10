@@ -61,6 +61,7 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
             ['Ex\\ResponseFaultsResponse'],
             ['Ex\\ResponseHader'],
             ['Ex\\ResponseHaderResponse'],
+            ['Ex\\OneWayNotify'],
         );
     }
 
@@ -125,6 +126,7 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
             ['Ex\\SoapEnvelope\\Messages\\ResponseFaultsOutput'],
             ['Ex\\SoapEnvelope\\Messages\\ResponseHaderInput'],
             ['Ex\\SoapEnvelope\\Messages\\ResponseHaderOutput'],
+            ['Ex\\SoapEnvelope\\Messages\\OneWayNotifyInput'],
         );
     }
 
@@ -207,6 +209,7 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
             ['Ex\\SoapEnvelope\\Parts\\ResponseFaultsOutput', 'Ex\\ResponseFaultsResponse',],
             ['Ex\\SoapEnvelope\\Parts\\ResponseHaderInput', 'Ex\\ResponseHader',],
             ['Ex\\SoapEnvelope\\Parts\\ResponseHaderOutput', 'Ex\\ResponseHaderResponse',],
+            ['Ex\\SoapEnvelope\\Parts\\OneWayNotifyInput', 'Ex\\OneWayNotify',],
         );
     }
 

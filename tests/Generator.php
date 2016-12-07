@@ -3,6 +3,7 @@ namespace GoetasWebservices\WsdlToPhp\Tests;
 
 use GoetasWebservices\WsdlToPhp\Generation\JmsSoapConverter;
 use GoetasWebservices\WsdlToPhp\Generation\PhpSoapConverter;
+use GoetasWebservices\XML\SOAPReader\Soap\Service;
 use GoetasWebservices\XML\SOAPReader\SoapReader;
 use GoetasWebservices\XML\WSDLReader\DefinitionsReader;
 use GoetasWebservices\Xsd\XsdToPhp\Jms\YamlConverter;
@@ -12,7 +13,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Generator extends AbstractGenerator
 {
-    public function getData(array $files)
+    public function getData(array $files, $servicePortNames = array())
     {
         $dispatcher = new EventDispatcher();
         $wsdlReader = new DefinitionsReader(null, $dispatcher);
@@ -24,17 +25,22 @@ class Generator extends AbstractGenerator
             $schemas[] = $definitions->getSchema();
         }
 
-        $php = $this->generatePHPFiles($schemas, $soapReader->getServices());
-        $jms = $this->generateJMSFiles($schemas, $soapReader->getServices());
+        $services = $soapReader->getServices();
+        $services = array_filter($services, function (Service $service) use ($servicePortNames) {
+            return empty($servicePortNames) || in_array($service->getPort()->getName(), $servicePortNames);
+        });
+
+        $php = $this->generatePHPFiles($schemas, $services);
+        $jms = $this->generateJMSFiles($schemas, $services);
 
         return [$php, $jms];
     }
 
-    public function generate(array $files)
+    public function generate(array $files, $servicePortNames = array())
     {
         $this->cleanDirectories();
 
-        list($php, $jms) = $this->getData($files);
+        list($php, $jms) = $this->getData($files, $servicePortNames);
 
         $this->writeJMS($jms);
         $this->writePHP($php);

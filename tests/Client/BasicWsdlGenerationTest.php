@@ -9,6 +9,7 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
     protected static $generator;
     protected static $php = [];
     protected static $jms = [];
+    protected static $jms12 = [];
     private static $namespace = 'Ex';
 
     public static function setUpBeforeClass()
@@ -16,6 +17,8 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
         self::$generator = new Generator([
             'http://www.example.org/test/' => self::$namespace
         ]);
+
+        list(, self::$jms12) = self::$generator->getData([__DIR__ . '/../Fixtures/test12.wsdl']);
 
         list(self::$php, self::$jms) = self::$generator->getData([__DIR__ . '/../Fixtures/test.wsdl']);
         self::$generator->registerAutoloader();
@@ -137,6 +140,48 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertArrayHasKey($part, self::$php);
         $this->assertTrue(self::$php[$part]->hasProperty('body'));
+    }
+
+    public function testJms12()
+    {
+        $this->assertEquals([
+            'Ex\\SoapEnvelope\\Messages\\DoSomethingInput' =>
+                [
+                    'xml_root_name' => 'SOAP:Envelope',
+                    'xml_root_namespace' => 'http://www.w3.org/2003/05/soap-envelope',
+                    'xml_namespaces' => [
+                        'SOAP' => 'http://www.w3.org/2003/05/soap-envelope',
+                    ],
+                    'properties' => [
+                        'body' => [
+                            'expose' => true,
+                            'access_type' => 'public_method',
+                            'type' => 'Ex\\SoapEnvelope\\Parts\\DoSomethingInput',
+                            'serialized_name' => 'Body',
+                            'xml_element' => [
+                                'namespace' => 'http://www.w3.org/2003/05/soap-envelope',
+                            ],
+                            'accessor' => [
+                                'getter' => 'getBody',
+                                'setter' => 'setBody',
+                            ],
+                        ],
+                        'header' => [
+                            'expose' => true,
+                            'access_type' => 'public_method',
+                            'type' => 'GoetasWebservices\\SoapServices\\SoapClient\\Arguments\\Headers\\Handler\\HeaderPlaceholder',
+                            'serialized_name' => 'Header',
+                            'xml_element' => [
+                                'namespace' => 'http://www.w3.org/2003/05/soap-envelope',
+                            ],
+                            'accessor' => [
+                                'getter' => 'getHeader',
+                                'setter' => 'setHeader',
+                            ],
+                        ],
+                    ],
+                ],
+        ], self::$jms12['Ex\SoapEnvelope\Messages\DoSomethingInput']);
     }
 
     public function testPhpMessagesExtra()

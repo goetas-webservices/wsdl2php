@@ -7,6 +7,11 @@ use GoetasWebservices\Xsd\XsdToPhp\Jms\YamlConverter;
 
 class JmsSoapConverter
 {
+    const SOAP = 'http://schemas.xmlsoap.org/soap/envelope/';
+    const SOAP_12 = 'http://www.w3.org/2003/05/soap-envelope';
+
+    protected $soapEnvelopeNs;
+
     protected $converter;
     private $classes = [];
     private $baseNs = [
@@ -59,6 +64,14 @@ class JmsSoapConverter
 
     private function visitService(\GoetasWebservices\XML\SOAPReader\Soap\Service $service, array &$visited)
     {
+        if ($service->getVersion() === '1.1') {
+            $this->soapEnvelopeNs = self::SOAP;
+        } elseif ($service->getVersion() === '1.2') {
+            $this->soapEnvelopeNs = self::SOAP_12;
+        } else {
+            throw new \RuntimeException("SOAP version '".$service->getVersion(). "'' is not supported");
+        }
+
         if (isset($visited[spl_object_hash($service)])) {
             return;
         }
@@ -83,7 +96,7 @@ class JmsSoapConverter
             $className = $this->findPHPName($message, Inflector::classify($hint), $this->baseNs['parts']);
             $class = array();
             $data = array();
-            $envelopeData["xml_namespaces"] = ['SOAP' => 'http://schemas.xmlsoap.org/soap/envelope/'];
+            $envelopeData["xml_namespaces"] = ['SOAP' => $this->soapEnvelopeNs];
             $class[$className] = &$data;
 
             if ($message->getMessage()->getDefinition()->getTargetNamespace()) {
@@ -98,15 +111,15 @@ class JmsSoapConverter
             $envelopeData = array();
             $envelopeClass[$messageClassName] = &$envelopeData;
             $envelopeData["xml_root_name"] = 'SOAP:Envelope';
-            $envelopeData["xml_root_namespace"] = 'http://schemas.xmlsoap.org/soap/envelope/';
-            $envelopeData["xml_namespaces"] = ['SOAP' => 'http://schemas.xmlsoap.org/soap/envelope/'];
+            $envelopeData["xml_root_namespace"] = $this->soapEnvelopeNs;
+            $envelopeData["xml_namespaces"] = ['SOAP' => $this->soapEnvelopeNs];
 
             $property = [];
             $property["expose"] = true;
             $property["access_type"] = "public_method";
             $property["type"] = $className;
             $property["serialized_name"] = 'Body';
-            $property["xml_element"]["namespace"] = 'http://schemas.xmlsoap.org/soap/envelope/';
+            $property["xml_element"]["namespace"] = $this->soapEnvelopeNs;
 
             $property["accessor"]["getter"] = "getBody";
             $property["accessor"]["setter"] = "setBody";
@@ -119,7 +132,7 @@ class JmsSoapConverter
                 $headersClass = array();
                 $headersData = array();
 
-                $headersData["xml_namespaces"] = ['SOAP' => 'http://schemas.xmlsoap.org/soap/envelope/'];
+                $headersData["xml_namespaces"] = ['SOAP' => $this->soapEnvelopeNs];
 
                 $className = $this->findPHPName($message, Inflector::classify($hint), $this->baseNs['headers']);
 
@@ -131,7 +144,7 @@ class JmsSoapConverter
                 $property["access_type"] = "public_method";
                 $property["type"] = count($message->getHeaders()) ? $className : 'GoetasWebservices\SoapServices\SoapClient\Arguments\Headers\Handler\HeaderPlaceholder';
                 $property["serialized_name"] = 'Header';
-                $property["xml_element"]["namespace"] = 'http://schemas.xmlsoap.org/soap/envelope/';
+                $property["xml_element"]["namespace"] = $this->soapEnvelopeNs;
 
                 $property["accessor"]["getter"] = "getHeader";
                 $property["accessor"]["setter"] = "setHeader";

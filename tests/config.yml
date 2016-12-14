@@ -2,9 +2,12 @@ xsd2php:
   namespaces:
     'http://www.example.org/test/': 'TestNs'
   destinations_php:
-    'TestNs': example
+    'TestNs': example/php
   destinations_jms:
-    'TestNs': example
+    'TestNs\SoapEnvelope12': example/metadata/soap-env-12
+    'TestNs\SoapEnvelope': example/metadata/soap-env-11
+    'TestNs\SoapParts': example/metadata/soap-parts
+    'TestNs': example/metadata
   aliases:
     'http://www.example.org/test/':
       responseHaderResponse:  'HaderResponse'

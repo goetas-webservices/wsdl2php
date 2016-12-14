@@ -145,7 +145,7 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
     public function testJms12()
     {
         $this->assertEquals([
-            'Ex\\SoapEnvelope\\Messages\\DoSomethingInput' =>
+            'Ex\\SoapEnvelope12\\Messages\\DoSomethingInput' =>
                 [
                     'xml_root_name' => 'SOAP:Envelope',
                     'xml_root_namespace' => 'http://www.w3.org/2003/05/soap-envelope',
@@ -156,7 +156,7 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
                         'body' => [
                             'expose' => true,
                             'access_type' => 'public_method',
-                            'type' => 'Ex\\SoapEnvelope\\Parts\\DoSomethingInput',
+                            'type' => 'Ex\\SoapParts\\DoSomethingInput',
                             'serialized_name' => 'Body',
                             'xml_element' => [
                                 'namespace' => 'http://www.w3.org/2003/05/soap-envelope',
@@ -181,7 +181,7 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
                         ],
                     ],
                 ],
-        ], self::$jms12['Ex\SoapEnvelope\Messages\DoSomethingInput']);
+        ], self::$jms12['Ex\SoapEnvelope12\Messages\DoSomethingInput']);
     }
 
     public function testPhpMessagesExtra()
@@ -194,11 +194,11 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleInput']->hasProperty('body'));
         $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleInput']->hasProperty('header'));
-        $this->assertEquals('Ex\SoapEnvelope\Parts\GetSimpleInput', self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleInput']->getProperty('body')->getType()->getFullName());
+        $this->assertEquals('Ex\SoapParts\GetSimpleInput', self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleInput']->getProperty('body')->getType()->getFullName());
 
         $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleOutput']->hasProperty('body'));
         $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleOutput']->hasProperty('header'));
-        $this->assertEquals('Ex\SoapEnvelope\Parts\GetSimpleOutput', self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleOutput']->getProperty('body')->getType()->getFullName());
+        $this->assertEquals('Ex\SoapParts\GetSimpleOutput', self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleOutput']->getProperty('body')->getType()->getFullName());
     }
 
 
@@ -234,27 +234,27 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
     public function getParts()
     {
         return array(
-            ['Ex\\SoapEnvelope\\Parts\\DoSomethingInput', 'Ex\\DoSomething',],
-            ['Ex\\SoapEnvelope\\Parts\\DoSomethingOutput', 'Ex\\DoSomethingResponse',],
-            ['Ex\\SoapEnvelope\\Parts\\GetMultiParamInput', 'Ex\\GetMultiParam',],
-            ['Ex\\SoapEnvelope\\Parts\\GetMultiParamOutput', 'Ex\\GetMultiParamResponse',],
-            ['Ex\\SoapEnvelope\\Parts\\GetReturnMultiParamInput', 'Ex\\GetReturnMultiParam',],
-            ['Ex\\SoapEnvelope\\Parts\\GetReturnMultiParamOutput', 'Ex\\GetReturnMultiParamResponse',],
-            ['Ex\\SoapEnvelope\\Parts\\GetSimpleInput', 'Ex\\GetSimple',],
-            ['Ex\\SoapEnvelope\\Parts\\GetSimpleOutput', 'Ex\\GetSimpleResponse',],
-            ['Ex\\SoapEnvelope\\Parts\\NoInputOutput', 'Ex\\NoInputResponse',],
-            ['Ex\\SoapEnvelope\\Parts\\NoOutputInput', 'Ex\\NoOutput',],
-            ['Ex\\SoapEnvelope\\Parts\\RequestHeaderInput', 'Ex\\RequestHeader',],
-            ['Ex\\SoapEnvelope\\Parts\\RequestHeaderOutput', 'Ex\\RequestHeaderResponse',],
-            ['Ex\\SoapEnvelope\\Parts\\RequestHeadersInput', 'Ex\\RequestHeaders',],
-            ['Ex\\SoapEnvelope\\Parts\\RequestHeadersOutput', 'Ex\\RequestHeadersResponse',],
-            ['Ex\\SoapEnvelope\\Parts\\ResponseFaultInput', 'Ex\\ResponseFault',],
-            ['Ex\\SoapEnvelope\\Parts\\ResponseFaultOutput', 'Ex\\ResponseFaultResponse',],
-            ['Ex\\SoapEnvelope\\Parts\\ResponseFaultsInput', 'Ex\\ResponseFaults',],
-            ['Ex\\SoapEnvelope\\Parts\\ResponseFaultsOutput', 'Ex\\ResponseFaultsResponse',],
-            ['Ex\\SoapEnvelope\\Parts\\ResponseHaderInput', 'Ex\\ResponseHader',],
-            ['Ex\\SoapEnvelope\\Parts\\ResponseHaderOutput', 'Ex\\ResponseHaderResponse',],
-            ['Ex\\SoapEnvelope\\Parts\\OneWayNotifyInput', 'Ex\\OneWayNotify',],
+            ['Ex\\SoapParts\\DoSomethingInput', 'Ex\\DoSomething',],
+            ['Ex\\SoapParts\\DoSomethingOutput', 'Ex\\DoSomethingResponse',],
+            ['Ex\\SoapParts\\GetMultiParamInput', 'Ex\\GetMultiParam',],
+            ['Ex\\SoapParts\\GetMultiParamOutput', 'Ex\\GetMultiParamResponse',],
+            ['Ex\\SoapParts\\GetReturnMultiParamInput', 'Ex\\GetReturnMultiParam',],
+            ['Ex\\SoapParts\\GetReturnMultiParamOutput', 'Ex\\GetReturnMultiParamResponse',],
+            ['Ex\\SoapParts\\GetSimpleInput', 'Ex\\GetSimple',],
+            ['Ex\\SoapParts\\GetSimpleOutput', 'Ex\\GetSimpleResponse',],
+            ['Ex\\SoapParts\\NoInputOutput', 'Ex\\NoInputResponse',],
+            ['Ex\\SoapParts\\NoOutputInput', 'Ex\\NoOutput',],
+            ['Ex\\SoapParts\\RequestHeaderInput', 'Ex\\RequestHeader',],
+            ['Ex\\SoapParts\\RequestHeaderOutput', 'Ex\\RequestHeaderResponse',],
+            ['Ex\\SoapParts\\RequestHeadersInput', 'Ex\\RequestHeaders',],
+            ['Ex\\SoapParts\\RequestHeadersOutput', 'Ex\\RequestHeadersResponse',],
+            ['Ex\\SoapParts\\ResponseFaultInput', 'Ex\\ResponseFault',],
+            ['Ex\\SoapParts\\ResponseFaultOutput', 'Ex\\ResponseFaultResponse',],
+            ['Ex\\SoapParts\\ResponseFaultsInput', 'Ex\\ResponseFaults',],
+            ['Ex\\SoapParts\\ResponseFaultsOutput', 'Ex\\ResponseFaultsResponse',],
+            ['Ex\\SoapParts\\ResponseHaderInput', 'Ex\\ResponseHader',],
+            ['Ex\\SoapParts\\ResponseHaderOutput', 'Ex\\ResponseHaderResponse',],
+            ['Ex\\SoapParts\\OneWayNotifyInput', 'Ex\\OneWayNotify',],
         );
     }
 
@@ -269,10 +269,10 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
     public function getEmptyParts()
     {
         return array(
-            ['Ex\\SoapEnvelope\\Parts\\NoBothInput'],
-            ['Ex\\SoapEnvelope\\Parts\\NoBothOutput'],
-            ['Ex\\SoapEnvelope\\Parts\\NoInputInput'],
-            ['Ex\\SoapEnvelope\\Parts\\NoOutputOutput'],
+            ['Ex\\SoapParts\\NoBothInput'],
+            ['Ex\\SoapParts\\NoBothOutput'],
+            ['Ex\\SoapParts\\NoInputInput'],
+            ['Ex\\SoapParts\\NoOutputOutput'],
         );
     }
 }

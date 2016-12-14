@@ -6,18 +6,29 @@ use GoetasWebservices\XML\SOAPReader\Soap\OperationMessage;
 use GoetasWebservices\XML\SOAPReader\Soap\Service;
 use GoetasWebservices\Xsd\XsdToPhp\Jms\YamlConverter;
 
-class JmsSoapConverter extends SoapConverter
+abstract class SoapConverter
 {
+    const SOAP = 'http://schemas.xmlsoap.org/soap/envelope/';
+    const SOAP_12 = 'http://www.w3.org/2003/05/soap-envelope';
 
-    protected $soapEnvelopeNs;
+    protected $baseNs = [
+        '1.1' => [
+            'headers' => '\\SoapEnvelope\\Headers',
+            'parts' => '\\SoapParts',
+            'messages' => '\\SoapEnvelope\\Messages',
+        ],
+        '1.2' => [
+            'headers' => '\\SoapEnvelope12\\Headers',
+            'parts' => '\\SoapParts',
+            'messages' => '\\SoapEnvelope12\\Messages',
+        ]
+    ];
 
-    protected $converter;
-    private $classes = [];
-
-    public function __construct(YamlConverter $converter, array $baseNs = array())
+    public function __construct(array $baseNs = array())
     {
-        $this->converter = $converter;
-        parent::__construct($baseNs);
+        if ($baseNs){
+            $this->baseNs = $baseNs;
+        }
     }
 
     public function visitServices(array $services)

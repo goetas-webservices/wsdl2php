@@ -89,16 +89,7 @@ class PhpSoapConverter extends SoapConverter
             $headerClass->setNamespace($ns . $this->baseNs[$service->getVersion()]['headers']);
             $envelopeClass->addProperty($property);
 
-            if (count($message->getHeaders())) {
-
-                $property->setType($headerClass);
-                $this->classes[$headerClass->getFullName()] = $headerClass;
-
-                foreach ($message->getHeaders() as $k => $header) {
-                    $this->visitMessageParts($headerClass, [$header->getPart()]);
-                }
-
-            }
+            $property->setType(new PHPClass('HeaderPlaceholder', 'GoetasWebservices\SoapServices\SoapClient\Arguments\Headers\Handler'));
         }
         return $this->classes['__' . spl_object_hash($message)];
     }

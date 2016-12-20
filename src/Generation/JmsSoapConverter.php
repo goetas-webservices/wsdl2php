@@ -117,33 +117,30 @@ class JmsSoapConverter extends SoapConverter
             $envelopeData["properties"]['body'] = $property;
             $this->classes[] = &$envelopeClass;
 
+            $headersClass = array();
+            $headersData = array();
 
-            if (1) {
-                $headersClass = array();
-                $headersData = array();
+            $headersData["xml_namespaces"] = ['SOAP' => $this->soapEnvelopeNs];
 
-                $headersData["xml_namespaces"] = ['SOAP' => $this->soapEnvelopeNs];
+            $className = $this->findPHPName($message, Inflector::classify($hint), $this->baseNs[$service->getVersion()]['headers']);
 
-                $className = $this->findPHPName($message, Inflector::classify($hint), $this->baseNs[$service->getVersion()]['headers']);
+            $headersClass[$className] = &$headersData;
+            $this->classes[] = &$headersClass;
 
-                $headersClass[$className] = &$headersData;
-                $this->classes[] = &$headersClass;
+            $property = [];
+            $property["expose"] = true;
+            $property["access_type"] = "public_method";
+            $property["type"] = 'GoetasWebservices\SoapServices\SoapClient\Arguments\Headers\Handler\HeaderPlaceholder';
+            $property["serialized_name"] = 'Header';
+            $property["xml_element"]["namespace"] = $this->soapEnvelopeNs;
 
-                $property = [];
-                $property["expose"] = true;
-                $property["access_type"] = "public_method";
-                $property["type"] = count($message->getHeaders()) ? $className : 'GoetasWebservices\SoapServices\SoapClient\Arguments\Headers\Handler\HeaderPlaceholder';
-                $property["serialized_name"] = 'Header';
-                $property["xml_element"]["namespace"] = $this->soapEnvelopeNs;
+            $property["accessor"]["getter"] = "getHeader";
+            $property["accessor"]["setter"] = "setHeader";
 
-                $property["accessor"]["getter"] = "getHeader";
-                $property["accessor"]["setter"] = "setHeader";
+            $envelopeData["properties"]['header'] = $property;
 
-                $envelopeData["properties"]['header'] = $property;
-
-                foreach ($message->getHeaders() as $k => $header) {
-                    $this->visitMessageParts($headersData, [$header->getPart()], 'GoetasWebservices\SoapServices\SoapEnvelope\Headers');
-                }
+            foreach ($message->getHeaders() as $k => $header) {
+                $this->visitMessageParts($headersData, [$header->getPart()], 'GoetasWebservices\SoapServices\SoapEnvelope\Headers');
             }
 
         }

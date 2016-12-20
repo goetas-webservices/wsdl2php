@@ -24,6 +24,27 @@ abstract class SoapConverter
         ]
     ];
 
+
+
+    protected $outputAnyElement = false;
+    protected $outputAnyAttribute = false;
+
+    /**
+     * @param bool $outputAnyElement
+     */
+    public function setOutputAnyElement($outputAnyElement)
+    {
+        $this->outputAnyElement = $outputAnyElement;
+    }
+
+    /**
+     * @param bool $outputAnyAttribute
+     */
+    public function setOutputAnyAttribute($outputAnyAttribute)
+    {
+        $this->outputAnyAttribute = $outputAnyAttribute;
+    }
+
     public function __construct(array $baseNs = array())
     {
         if ($baseNs){

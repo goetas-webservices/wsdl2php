@@ -76,36 +76,6 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey($part, self::$php);
     }
 
-    public function getHeaders()
-    {
-        return array(
-            ['Ex\\SoapEnvelope\\Headers\\RequestHeaderInput'],
-            ['Ex\\SoapEnvelope\\Headers\\RequestHeadersInput'],
-            ['Ex\\SoapEnvelope\\Headers\\ResponseHaderOutput'],
-        );
-    }
-
-    /**
-     * @dataProvider getHeaders
-     */
-    public function testPhpHeaders($part)
-    {
-        $this->assertArrayHasKey($part, self::$php);
-    }
-
-    public function testPhpHeadersExtra()
-    {
-        $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Headers\\RequestHeaderInput']->hasProperty('header'));
-
-        $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Headers\\RequestHeadersInput']->hasProperty('header'));
-        $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Headers\\RequestHeadersInput']->hasProperty('headerLocal'));
-
-        $this->assertEquals('Ex\AuthHeader', self::$php['Ex\\SoapEnvelope\\Headers\\RequestHeadersInput']->getProperty('header')->getType()->getFullName());
-        $this->assertEquals('Ex\AuthHeaderLocal', self::$php['Ex\\SoapEnvelope\\Headers\\RequestHeadersInput']->getProperty('headerLocal')->getType()->getFullName());
-
-        $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Headers\\ResponseHaderOutput']->hasProperty('header'));
-    }
-
     public function getMessages()
     {
         return array(
@@ -187,10 +157,8 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
     public function testPhpMessagesExtra()
     {
         $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\RequestHeadersInput']->hasProperty('header'));
-        $this->assertEquals('Ex\SoapEnvelope\Headers\RequestHeadersInput', self::$php['Ex\\SoapEnvelope\\Messages\\RequestHeadersInput']->getProperty('header')->getType()->getFullName());
 
         $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\RequestHeaderInput']->hasProperty('header'));
-        $this->assertEquals('Ex\SoapEnvelope\Headers\RequestHeaderInput', self::$php['Ex\\SoapEnvelope\\Messages\\RequestHeaderInput']->getProperty('header')->getType()->getFullName());
 
         $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleInput']->hasProperty('body'));
         $this->assertTrue(self::$php['Ex\\SoapEnvelope\\Messages\\GetSimpleInput']->hasProperty('header'));

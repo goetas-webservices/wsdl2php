@@ -56,11 +56,7 @@ class Generator extends AbstractGenerator
     protected function generatePHPFiles(array $schemas, array $services)
     {
         $converter = new PhpConverter($this->namingStrategy);
-
         $soapConverter = new PhpSoapConverter($converter);
-
-        //$soapConverter->setOutputAnyAttribute(true);
-        $soapConverter->setOutputAnyElement(true);
 
         $this->setNamespaces($converter);
         $items = $converter->convert($schemas);
@@ -72,8 +68,6 @@ class Generator extends AbstractGenerator
     {
         $converter = new YamlConverter($this->namingStrategy);
         $soapConverter = new JmsSoapConverter($converter);
-
-        $soapConverter->setOutputAnyElement(true);
 
         $this->setNamespaces($converter);
         $items = $converter->convert($schemas);

@@ -9,7 +9,7 @@
          verbose="false">
 
     <testsuites>
-        <testsuite>
+        <testsuite name="Goetas WSDL to PHP Test Suite">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>

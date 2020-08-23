@@ -1,7 +1,9 @@
 <?php
 namespace GoetasWebservices\WsdlToPhp\Tests;
 
-class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class BasicWsdlGenerationTest extends TestCase
 {
     /**
      * @var Generator
@@ -12,7 +14,7 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
     protected static $jms12 = [];
     private static $namespace = 'Ex';
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$generator = new Generator([
             'http://www.example.org/test/' => self::$namespace
@@ -24,7 +26,7 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
         self::$generator->registerAutoloader();
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::$generator->unRegisterAutoloader();
         //self::$generator->cleanDirectories();
@@ -33,6 +35,7 @@ class BasicWsdlGenerationTest extends \PHPUnit_Framework_TestCase
     public function testGenerator()
     {
         self::setUpBeforeClass();
+        self::assertTrue(true);
     }
 
     public function getTypes()

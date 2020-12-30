@@ -130,7 +130,9 @@ class JmsSoapConverter extends SoapConverter
             $property = [];
             $property["expose"] = true;
             $property["access_type"] = "public_method";
-            $property["type"] = 'GoetasWebservices\SoapServices\SoapClient\Arguments\Headers\Handler\HeaderPlaceholder';
+//            $property["type"] = 'GoetasWebservices\SoapServices\Metadata\Arguments\Headers\Handler\HeaderPlaceholder<\''.$className.'\'>';
+            $property["type"] = $className;
+
             $property["serialized_name"] = 'Header';
             $property["xml_element"]["namespace"] = $this->soapEnvelopeNs;
 
@@ -140,7 +142,7 @@ class JmsSoapConverter extends SoapConverter
             $envelopeData["properties"]['header'] = $property;
 
             foreach ($message->getHeaders() as $k => $header) {
-                $this->visitMessageParts($headersData, [$header->getPart()], 'GoetasWebservices\SoapServices\SoapEnvelope\Headers');
+                $this->visitMessageParts($headersData, [$header->getPart()], 'GoetasWebservices\SoapServices\SoapEnvelope\Header');
             }
 
         }
@@ -158,26 +160,28 @@ class JmsSoapConverter extends SoapConverter
             $property["access_type"] = "public_method";
 
 
-            $property["accessor"]["getter"] = "get" . Inflector::classify($part->getName());
-            $property["accessor"]["setter"] = "set" . Inflector::classify($part->getName());
-
-
             if ($part->getElement()) {
+                $name = $part->getElement()->getName();
                 $property["xml_element"]["namespace"] = $part->getElement()->getSchema()->getTargetNamespace();
-                $property["serialized_name"] = $part->getElement()->getName();
                 $c = $this->converter->visitElementDef($part->getElement()->getSchema(), $part->getElement());
             } else {
+                $name = $part->getName();
                 $property["xml_element"]["namespace"] = null;
-                $property["serialized_name"] = $part->getName();
                 $c = $this->converter->visitType($part->getType());
             }
+
+            $property["accessor"]["getter"] = "get" . Inflector::classify($name);
+            $property["accessor"]["setter"] = "set" . Inflector::classify($name);
+
+            $property["serialized_name"] = $name;
+
             if ($wrapper) {
                 $property["type"] = $wrapper . "<'" . key($c) . "'>";
             } else {
                 $property["type"] = key($c);
             }
 
-            $data['properties'][Inflector::camelize($part->getName())] = $property;
+            $data['properties'][Inflector::camelize($name)] = $property;
         }
     }
 

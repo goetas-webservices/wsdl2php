@@ -87,9 +87,23 @@ class PhpSoapConverter extends SoapConverter
             $headerClass = new PHPClass();
             $headerClass->setName(Inflector::classify($name));
             $headerClass->setNamespace($ns . $this->baseNs[$service->getVersion()]['headers']);
+
+            $topHeader = new PHPClass();
+            $topHeader->setName('HeaderPlaceholder');
+            $topHeader->setNamespace('GoetasWebservices\SoapServices\Metadata\Arguments\Headers\Handler');
+
+            $headerClass->setExtends($topHeader);
+
+            $this->classes[$headerClass->getFullName()] = $headerClass;
+
             $envelopeClass->addProperty($property);
 
-            $property->setType(new PHPClass('HeaderPlaceholder', 'GoetasWebservices\SoapServices\SoapClient\Arguments\Headers\Handler'));
+            $property->setType(new PHPClass($headerClass->getName(), $headerClass->getNamespace()));
+
+            foreach ($message->getHeaders() as $header) {
+                $this->visitMessageParts($headerClass, [$header->getPart()]);
+            }
+
         }
         return $this->classes['__' . spl_object_hash($message)];
     }
@@ -101,11 +115,12 @@ class PhpSoapConverter extends SoapConverter
          */
         foreach ($parts as $part) {
             $property = new PHPProperty();
-            $property->setName(Inflector::camelize($part->getName()));
 
             if ($part->getElement()) {
+                $property->setName(Inflector::camelize($part->getElement()->getName()));
                 $property->setType($this->converter->visitElementDef($part->getElement()));
             } else {
+                $property->setName(Inflector::camelize($part->getName()));
                 $property->setType($this->converter->visitType($part->getType()));
             }
 

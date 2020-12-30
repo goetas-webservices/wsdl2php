@@ -143,7 +143,7 @@ abstract class SoapConverter
                 $property = [];
                 $property["expose"] = true;
                 $property["access_type"] = "public_method";
-                $property["type"] = count($message->getHeaders()) ? $className : 'GoetasWebservices\SoapServices\SoapClient\Arguments\Headers\Handler\HeaderPlaceholder';
+                $property["type"] = count($message->getHeaders()) ? $className : 'GoetasWebservices\SoapServices\Metadata\Arguments\Headers\Handler\HeaderPlaceholder';
                 $property["serialized_name"] = 'Header';
                 $property["xml_element"]["namespace"] = $this->soapEnvelopeNs;
 

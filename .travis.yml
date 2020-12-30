@@ -19,7 +19,7 @@ matrix:
 before_script:
   - if [[ $TRAVIS_PHP_VERSION = '7.1' ]]; then PHPUNIT_FLAGS="--coverage-clover=coverage.clover"; else PHPUNIT_FLAGS=""; fi
   - if [[ $TRAVIS_PHP_VERSION != '7.1' ]]; then phpenv config-rm xdebug.ini; fi
-  - composer self-update
+  - composer self-update --1
   - composer update $COMPOSER_FLAGS
 
 script:
@@ -29,4 +29,4 @@ script:
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - if [[ $TRAVIS_PHP_VERSION = '7.1' ]] ; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
-  
+

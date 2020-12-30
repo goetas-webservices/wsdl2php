@@ -142,7 +142,7 @@ class BasicWsdlGenerationTest extends TestCase
                         'header' => [
                             'expose' => true,
                             'access_type' => 'public_method',
-                            'type' => 'GoetasWebservices\\SoapServices\\SoapClient\\Arguments\\Headers\\Handler\\HeaderPlaceholder',
+                            'type' => 'Ex\\SoapEnvelope12\\Headers\\DoSomethingInput',
                             'serialized_name' => 'Header',
                             'xml_element' => [
                                 'namespace' => 'http://www.w3.org/2003/05/soap-envelope',
@@ -198,8 +198,12 @@ class BasicWsdlGenerationTest extends TestCase
     public function testPhpParts($part, $type)
     {
         $this->assertArrayHasKey($part, self::$php);
-        $this->assertTrue(self::$php[$part]->hasProperty('parameters'));
-        $this->assertEquals($type, self::$php[$part]->getProperty('parameters')->getType()->getFullName());
+        /**
+         * @var \GoetasWebservices\Xsd\XsdToPhp\Php\Structure\PHPClass $partClass
+         */
+        $partClass = self::$php[$part];
+        $props = $partClass->getProperties();
+        $this->assertEquals($type, reset($props)->getType()->getFullName());
     }
 
     public function getParts()

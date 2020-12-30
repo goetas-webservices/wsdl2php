@@ -8,8 +8,15 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('wsdl2php');
+
+        $tb = new TreeBuilder('wsdl2php');
+
+        if (method_exists($tb, 'getRootNode')) {
+            $rootNode = $tb->getRootNode();
+        } else {
+            $rootNode = $tb->root('wsdl2php');
+        }
+
         $rootNode
             ->children()
             ->scalarNode('headers')
@@ -30,6 +37,6 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                 ->end()
             ->end();
-        return $treeBuilder;
+        return $tb;
     }
 }

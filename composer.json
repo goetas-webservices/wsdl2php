@@ -1,5 +1,6 @@
 {
   "name": "goetas-webservices/wsdl2php",
+  "license": "MIT",
   "authors": [
     {
       "name": "Asmir Mustafic",

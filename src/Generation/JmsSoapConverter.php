@@ -104,6 +104,9 @@ class JmsSoapConverter extends SoapConverter
             $envelopeData["xml_root_namespace"] = $this->soapEnvelopeNs;
             $envelopeData["xml_namespaces"] = ['SOAP' => $this->soapEnvelopeNs];
 
+            $envelopeData["accessor_order"] = 'custom';
+            $envelopeData["custom_accessor_order"] = ['header', 'body'];
+
             $property = [];
             $property["expose"] = true;
             $property["access_type"] = "public_method";
@@ -130,8 +133,7 @@ class JmsSoapConverter extends SoapConverter
             $property = [];
             $property["expose"] = true;
             $property["access_type"] = "public_method";
-//            $property["type"] = 'GoetasWebservices\SoapServices\Metadata\Arguments\Headers\Handler\HeaderPlaceholder<\''.$className.'\'>';
-            $property["type"] = $className;
+            $property["type"] = 'GoetasWebservices\SoapServices\Metadata\Headers\Handler\HeaderPlaceholder<\''.$className.'\'>';
 
             $property["serialized_name"] = 'Header';
             $property["xml_element"]["namespace"] = $this->soapEnvelopeNs;

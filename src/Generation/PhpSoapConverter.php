@@ -75,6 +75,7 @@ class PhpSoapConverter extends SoapConverter
             $envelopeClass = new PHPClass();
             $envelopeClass->setName(Inflector::classify($name));
             $envelopeClass->setNamespace($ns . $this->baseNs[$service->getVersion()]['messages']);
+            $envelopeClass->setImplements(['GoetasWebservices\SoapServices\Metadata\Envelope\Envelope']);
             $this->classes[$envelopeClass->getFullName()] = $envelopeClass;
 
             if ($message->getBody()->getParts()) {
@@ -87,12 +88,6 @@ class PhpSoapConverter extends SoapConverter
             $headerClass = new PHPClass();
             $headerClass->setName(Inflector::classify($name));
             $headerClass->setNamespace($ns . $this->baseNs[$service->getVersion()]['headers']);
-
-            $topHeader = new PHPClass();
-            $topHeader->setName('HeaderPlaceholder');
-            $topHeader->setNamespace('GoetasWebservices\SoapServices\Metadata\Arguments\Headers\Handler');
-
-            $headerClass->setExtends($topHeader);
 
             $this->classes[$headerClass->getFullName()] = $headerClass;
 

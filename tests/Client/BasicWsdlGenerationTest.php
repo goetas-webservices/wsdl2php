@@ -125,6 +125,8 @@ class BasicWsdlGenerationTest extends TestCase
                     'xml_namespaces' => [
                         'SOAP' => 'http://www.w3.org/2003/05/soap-envelope',
                     ],
+                    'accessor_order' => 'custom',
+                    'custom_accessor_order' => ['header', 'body'],
                     'properties' => [
                         'body' => [
                             'expose' => true,
@@ -142,7 +144,7 @@ class BasicWsdlGenerationTest extends TestCase
                         'header' => [
                             'expose' => true,
                             'access_type' => 'public_method',
-                            'type' => 'Ex\\SoapEnvelope12\\Headers\\DoSomethingInput',
+                            'type' => 'GoetasWebservices\SoapServices\Metadata\Headers\Handler\HeaderPlaceholder<\'Ex\SoapEnvelope12\Headers\DoSomethingInput\'>',
                             'serialized_name' => 'Header',
                             'xml_element' => [
                                 'namespace' => 'http://www.w3.org/2003/05/soap-envelope',

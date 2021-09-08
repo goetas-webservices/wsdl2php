@@ -91,7 +91,7 @@ abstract class SoapConverter
         }
     }
 
-    private function visitMessage(OperationMessage $message, $hint = '', \GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, Service $service)
+    private function visitMessage(OperationMessage $message, $hint, \GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, Service $service)
     {
         if (!isset($this->classes[spl_object_hash($message)])) {
             $className = $this->findPHPName($message, Inflector::classify($hint), $this->baseNs[$service->getVersion()]['parts']);

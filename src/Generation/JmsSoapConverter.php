@@ -1,7 +1,8 @@
 <?php
 namespace GoetasWebservices\WsdlToPhp\Generation;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use GoetasWebservices\XML\SOAPReader\Soap\OperationMessage;
 use GoetasWebservices\XML\SOAPReader\Soap\Service;
 use GoetasWebservices\Xsd\XsdToPhp\Jms\YamlConverter;
@@ -83,7 +84,7 @@ class JmsSoapConverter extends SoapConverter
     private function visitMessage(OperationMessage $message, $hint, \GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, Service $service)
     {
         if (!isset($this->classes[spl_object_hash($message)])) {
-            $className = $this->findPHPName($message, Inflector::classify($hint), $this->baseNs[$service->getVersion()]['parts']);
+            $className = $this->findPHPName($message, $this->inflector->classify($hint), $this->baseNs[$service->getVersion()]['parts']);
             $class = array();
             $data = array();
             $envelopeData["xml_namespaces"] = ['SOAP' => $this->soapEnvelopeNs];
@@ -96,7 +97,7 @@ class JmsSoapConverter extends SoapConverter
 
             $this->classes[spl_object_hash($message)] = &$class;
 
-            $messageClassName = $this->findPHPName($message, Inflector::classify($hint), $this->baseNs[$service->getVersion()]['messages']);
+            $messageClassName = $this->findPHPName($message, $this->inflector->classify($hint), $this->baseNs[$service->getVersion()]['messages']);
             $envelopeClass = array();
             $envelopeData = array();
             $envelopeClass[$messageClassName] = &$envelopeData;
@@ -125,7 +126,7 @@ class JmsSoapConverter extends SoapConverter
 
             $headersData["xml_namespaces"] = ['SOAP' => $this->soapEnvelopeNs];
 
-            $className = $this->findPHPName($message, Inflector::classify($hint), $this->baseNs[$service->getVersion()]['headers']);
+            $className = $this->findPHPName($message, $this->inflector->classify($hint), $this->baseNs[$service->getVersion()]['headers']);
 
             $headersClass[$className] = &$headersData;
             $this->classes[] = &$headersClass;
@@ -172,8 +173,8 @@ class JmsSoapConverter extends SoapConverter
                 $c = $this->converter->visitType($part->getType());
             }
 
-            $property["accessor"]["getter"] = "get" . Inflector::classify($name);
-            $property["accessor"]["setter"] = "set" . Inflector::classify($name);
+            $property["accessor"]["getter"] = "get" . $this->inflector->classify($name);
+            $property["accessor"]["setter"] = "set" . $this->inflector->classify($name);
 
             $property["serialized_name"] = $name;
 
@@ -183,13 +184,13 @@ class JmsSoapConverter extends SoapConverter
                 $property["type"] = key($c);
             }
 
-            $data['properties'][Inflector::camelize($name)] = $property;
+            $data['properties'][$this->inflector->camelize($name)] = $property;
         }
     }
 
     private function findPHPName(OperationMessage $message, $hint = '', $nsadd = '')
     {
-        $name = Inflector::classify($message->getMessage()->getOperation()->getName()) . $hint;
+        $name = $this->inflector->classify($message->getMessage()->getOperation()->getName()) . $hint;
         $targetNs = $message->getMessage()->getDefinition()->getTargetNamespace();
 
         $namespaces = $this->converter->getNamespaces();

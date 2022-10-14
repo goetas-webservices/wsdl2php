@@ -8,7 +8,7 @@
     }
   ],
   "require": {
-    "php": ">=7.2",
+    "php": "^7.1|^8.0",
     "goetas-webservices/soap-reader": "dev-patch-1",
     "goetas-webservices/wsdl-reader": "^0.3",
     "goetas-webservices/xsd2php": "^0.4.1",

@@ -1,10 +1,11 @@
 <?php
 namespace GoetasWebservices\WsdlToPhp\Generation;
 
-use Doctrine\Inflector\InflectorFactory;
 use Exception;
+use GoetasWebservices\XML\SOAPReader\Soap\Operation;
 use GoetasWebservices\XML\SOAPReader\Soap\OperationMessage;
 use GoetasWebservices\XML\SOAPReader\Soap\Service;
+use GoetasWebservices\XML\WSDLReader\Wsdl\Message\Part;
 use GoetasWebservices\Xsd\XsdToPhp\Php\PhpConverter;
 use GoetasWebservices\Xsd\XsdToPhp\Php\Structure\PHPClass;
 use GoetasWebservices\Xsd\XsdToPhp\Php\Structure\PHPProperty;
@@ -49,7 +50,7 @@ class PhpSoapConverter extends SoapConverter
         }
     }
 
-    private function visitOperation(\GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, Service $service)
+    private function visitOperation(Operation $operation, Service $service)
     {
         $this->visitMessage($operation->getInput(), 'input', $operation, $service);
         if (null !== ($output = $operation->getOutput())) {
@@ -57,7 +58,7 @@ class PhpSoapConverter extends SoapConverter
         }
     }
 
-    private function visitMessage(OperationMessage $message, $hint, \GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, Service $service)
+    private function visitMessage(OperationMessage $message, $hint, Operation $operation, Service $service)
     {
         if (!isset($this->classes['__' . spl_object_hash($message)])) {
 
@@ -106,7 +107,7 @@ class PhpSoapConverter extends SoapConverter
     private function visitMessageParts(PHPClass $class, array $parts)
     {
         /**
-         * @var $part \GoetasWebservices\XML\WSDLReader\Wsdl\Message\Part
+         * @var $part Part
          */
         foreach ($parts as $part) {
             $property = new PHPProperty();

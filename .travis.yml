@@ -6,7 +6,6 @@ cache:
     - vendor
     - $HOME/.composer/cache
 php:
-  - 7.1
   - 7.2
   - 7.3
   - 7.4
@@ -15,20 +14,15 @@ php:
 
 matrix:
   include:
-    - php: 7.1
+    - php: 7.2
       env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable'
 
 before_script:
-  - if [[ $TRAVIS_PHP_VERSION = '7.1' ]]; then PHPUNIT_FLAGS="--coverage-clover=coverage.clover"; else PHPUNIT_FLAGS=""; fi
-  - if [[ $TRAVIS_PHP_VERSION != '7.1' ]]; then phpenv config-rm xdebug.ini; fi
   - composer self-update --1
+  - if [[ $TRAVIS_PHP_VERSION == '7.'* ]]; then composer --dev require ocramius/package-versions:^1.0 --no-update; fi
   - composer update $COMPOSER_FLAGS
 
 script:
   - vendor/phpunit/phpunit/phpunit $PHPUNIT_FLAGS
   - bin/wsdl2php convert tests/config.yml tests/Fixtures/test.wsdl -vv
-
-after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - if [[ $TRAVIS_PHP_VERSION = '7.1' ]] ; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
 

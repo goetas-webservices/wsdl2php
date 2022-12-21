@@ -1,10 +1,12 @@
 <?php
 namespace GoetasWebservices\WsdlToPhp\Generation;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
+use GoetasWebservices\XML\SOAPReader\Soap\Operation;
 use GoetasWebservices\XML\SOAPReader\Soap\OperationMessage;
 use GoetasWebservices\XML\SOAPReader\Soap\Service;
-use GoetasWebservices\Xsd\XsdToPhp\Jms\YamlConverter;
+use GoetasWebservices\XML\WSDLReader\Wsdl\Message\Part;
+use RuntimeException;
 
 abstract class SoapConverter
 {
@@ -24,8 +26,11 @@ abstract class SoapConverter
         ]
     ];
 
+    protected $inflector;
+
     public function __construct(array $baseNs = array())
     {
+        $this->inflector = InflectorFactory::create()->build();
         if ($baseNs){
             $this->baseNs = $baseNs;
         }
@@ -63,14 +68,14 @@ abstract class SoapConverter
         return $ret;
     }
 
-    private function visitService(\GoetasWebservices\XML\SOAPReader\Soap\Service $service, array &$visited)
+    private function visitService(Service $service, array &$visited)
     {
         if ($service->getVersion() === '1.1') {
             $this->soapEnvelopeNs = self::SOAP;
         } elseif ($service->getVersion() === '1.2') {
             $this->soapEnvelopeNs = self::SOAP_12;
         } else {
-            throw new \RuntimeException("SOAP version '".$service->getVersion(). "'' is not supported");
+            throw new RuntimeException("SOAP version '".$service->getVersion(). "'' is not supported");
         }
 
         if (isset($visited[spl_object_hash($service)])) {
@@ -83,7 +88,7 @@ abstract class SoapConverter
         }
     }
 
-    private function visitOperation(\GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, Service $service)
+    private function visitOperation(Operation $operation, Service $service)
     {
         $this->visitMessage($operation->getInput(), 'input', $operation, $service);
         if (null !== ($output = $operation->getOutput())) {
@@ -91,10 +96,10 @@ abstract class SoapConverter
         }
     }
 
-    private function visitMessage(OperationMessage $message, $hint, \GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, Service $service)
+    private function visitMessage(OperationMessage $message, $hint, Operation $operation, Service $service)
     {
         if (!isset($this->classes[spl_object_hash($message)])) {
-            $className = $this->findPHPName($message, Inflector::classify($hint), $this->baseNs[$service->getVersion()]['parts']);
+            $className = $this->findPHPName($message, $this->inflector->classify($hint), $this->baseNs[$service->getVersion()]['parts']);
             $class = array();
             $data = array();
             $envelopeData["xml_namespaces"] = ['SOAP' => $this->soapEnvelopeNs];
@@ -107,7 +112,7 @@ abstract class SoapConverter
 
             $this->classes[spl_object_hash($message)] = &$class;
 
-            $messageClassName = $this->findPHPName($message, Inflector::classify($hint), $this->baseNs[$service->getVersion()]['messages']);
+            $messageClassName = $this->findPHPName($message, $this->inflector->classify($hint), $this->baseNs[$service->getVersion()]['messages']);
             $envelopeClass = array();
             $envelopeData = array();
             $envelopeClass[$messageClassName] = &$envelopeData;
@@ -135,7 +140,7 @@ abstract class SoapConverter
 
                 $headersData["xml_namespaces"] = ['SOAP' => $this->soapEnvelopeNs];
 
-                $className = $this->findPHPName($message, Inflector::classify($hint), $this->baseNs[$service->getVersion()]['headers']);
+                $className = $this->findPHPName($message, $this->inflector->classify($hint), $this->baseNs[$service->getVersion()]['headers']);
 
                 $headersClass[$className] = &$headersData;
                 $this->classes[] = &$headersClass;
@@ -164,7 +169,7 @@ abstract class SoapConverter
     private function visitMessageParts(&$data, array $parts, $wrapper = null)
     {
         /**
-         * @var $part \GoetasWebservices\XML\WSDLReader\Wsdl\Message\Part
+         * @var $part Part
          */
         foreach ($parts as $part) {
             $property = [];
@@ -172,8 +177,8 @@ abstract class SoapConverter
             $property["access_type"] = "public_method";
 
 
-            $property["accessor"]["getter"] = "get" . Inflector::classify($part->getName());
-            $property["accessor"]["setter"] = "set" . Inflector::classify($part->getName());
+            $property["accessor"]["getter"] = "get" . $this->inflector->classify($part->getName());
+            $property["accessor"]["setter"] = "set" . $this->inflector->classify($part->getName());
 
 
             if ($part->getElement()) {
@@ -191,13 +196,13 @@ abstract class SoapConverter
                 $property["type"] = key($c);
             }
 
-            $data['properties'][Inflector::camelize($part->getName())] = $property;
+            $data['properties'][$this->inflector->camelize($part->getName())] = $property;
         }
     }
 
     private function findPHPName(OperationMessage $message, $hint = '', $nsadd = '')
     {
-        $name = Inflector::classify($message->getMessage()->getOperation()->getName()) . $hint;
+        $name = $this->inflector->classify($message->getMessage()->getOperation()->getName()) . $hint;
         $targetNs = $message->getMessage()->getDefinition()->getTargetNamespace();
 
         $namespaces = $this->converter->getNamespaces();

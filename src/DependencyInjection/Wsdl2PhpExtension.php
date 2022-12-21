@@ -21,7 +21,7 @@ class Wsdl2PhpExtension extends Extension
         $container->setParameter('goetas_webservices.wsdl2php.config', $config);
     }
 
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'wsdl2php';
     }

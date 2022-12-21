@@ -1,10 +1,11 @@
 <?php
 namespace GoetasWebservices\WsdlToPhp\Generation;
 
-use Doctrine\Common\Inflector\Inflector;
 use Exception;
+use GoetasWebservices\XML\SOAPReader\Soap\Operation;
 use GoetasWebservices\XML\SOAPReader\Soap\OperationMessage;
 use GoetasWebservices\XML\SOAPReader\Soap\Service;
+use GoetasWebservices\XML\WSDLReader\Wsdl\Message\Part;
 use GoetasWebservices\Xsd\XsdToPhp\Php\PhpConverter;
 use GoetasWebservices\Xsd\XsdToPhp\Php\Structure\PHPClass;
 use GoetasWebservices\Xsd\XsdToPhp\Php\Structure\PHPProperty;
@@ -49,7 +50,7 @@ class PhpSoapConverter extends SoapConverter
         }
     }
 
-    private function visitOperation(\GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, Service $service)
+    private function visitOperation(Operation $operation, Service $service)
     {
         $this->visitMessage($operation->getInput(), 'input', $operation, $service);
         if (null !== ($output = $operation->getOutput())) {
@@ -57,14 +58,14 @@ class PhpSoapConverter extends SoapConverter
         }
     }
 
-    private function visitMessage(OperationMessage $message, $hint, \GoetasWebservices\XML\SOAPReader\Soap\Operation $operation, Service $service)
+    private function visitMessage(OperationMessage $message, $hint, Operation $operation, Service $service)
     {
         if (!isset($this->classes['__' . spl_object_hash($message)])) {
 
             $this->classes['__' . spl_object_hash($message)] = $bodyClass = new PHPClass();
 
-            list ($name, $ns) = $this->findPHPName($message, Inflector::classify($hint));
-            $bodyClass->setName(Inflector::classify($name));
+            list ($name, $ns) = $this->findPHPName($message, $this->inflector->classify($hint));
+            $bodyClass->setName($this->inflector->classify($name));
             $bodyClass->setNamespace($ns . $this->baseNs[$service->getVersion()]['parts']);
             if ($message->getBody()->getParts()) {
                 $this->classes[$bodyClass->getFullName()] = $bodyClass;
@@ -73,7 +74,7 @@ class PhpSoapConverter extends SoapConverter
             $this->visitMessageParts($bodyClass, $message->getBody()->getParts());
 
             $envelopeClass = new PHPClass();
-            $envelopeClass->setName(Inflector::classify($name));
+            $envelopeClass->setName($this->inflector->classify($name));
             $envelopeClass->setNamespace($ns . $this->baseNs[$service->getVersion()]['messages']);
             $envelopeClass->setImplements(['GoetasWebservices\SoapServices\Metadata\Envelope\Envelope']);
             $this->classes[$envelopeClass->getFullName()] = $envelopeClass;
@@ -86,7 +87,7 @@ class PhpSoapConverter extends SoapConverter
 
             $property = new PHPProperty('header');
             $headerClass = new PHPClass();
-            $headerClass->setName(Inflector::classify($name));
+            $headerClass->setName($this->inflector->classify($name));
             $headerClass->setNamespace($ns . $this->baseNs[$service->getVersion()]['headers']);
 
             $this->classes[$headerClass->getFullName()] = $headerClass;
@@ -106,16 +107,16 @@ class PhpSoapConverter extends SoapConverter
     private function visitMessageParts(PHPClass $class, array $parts)
     {
         /**
-         * @var $part \GoetasWebservices\XML\WSDLReader\Wsdl\Message\Part
+         * @var $part Part
          */
         foreach ($parts as $part) {
             $property = new PHPProperty();
 
             if ($part->getElement()) {
-                $property->setName(Inflector::camelize($part->getElement()->getName()));
+                $property->setName($this->inflector->camelize($part->getElement()->getName()));
                 $property->setType($this->converter->visitElementDef($part->getElement()));
             } else {
-                $property->setName(Inflector::camelize($part->getName()));
+                $property->setName($this->inflector->camelize($part->getName()));
                 $property->setType($this->converter->visitType($part->getType()));
             }
 

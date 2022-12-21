@@ -14,7 +14,7 @@ class Convert extends XsdToPhpConvert
         $this->setDescription("Convert a WSDL file into PHP classes and JMS serializer metadata files");
         $this->setDefinition([
             new InputArgument('config', InputArgument::REQUIRED, 'Config file'),
-            new InputArgument('src', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Where are located your WSDL files', []),
+            new InputArgument('src', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Where are located your WSDL files'),
         ]);
     }
 
